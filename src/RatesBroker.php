@@ -1,51 +1,28 @@
 <?php
 namespace Evilamany\Rates;
 
-use Evilamany\RatesProducer;
-
-use Evilamany\Contracts\CurrencyRepositoryContract;
-use Evilamany\Repositories\BitcoinRepository;
-use Evilamany\Repositories\LitecoinRepository;
+use Evilamany\Rates\Services\CandleRateService;
+use Evilamany\Rates\Services\SingleRateService;
+use Evilamany\Rates\Facades\RedisFacade;
 
 class RatesBroker
 {
-    private $bitcoinRepository,
-            $litecoinRepository;
+    private $candleRateService,
+            $singleRateService;
 
-    public function construct() {
-        $this->bitcoinRepository = new BitcoinRepository;
-        $this->litecoinRepository = new LitecoinRepository;
+    public function construct($config) {
+        $this->candleRateService = new CandleRateService;
+        $this->singleRateService = new SingleRateService;
+
+        RedisFacade::setConnection($config['redis']);
     }
 
     public function run() {
-        RatesProducer::listen(function($currency, $value) {
-            $repository = $this->getRepositoryForCurrency($currency);
+        RateProducer::listen(function($currency, $value) {
+            $now = now()->timestamp;
 
-            $this->processNewRate($repository, $value);
-
-            $repository->timestampExists();
+            $this->singleRateService->processValue($value, $now, $currency);
+            $this->candleRateService->processValue($value, $now, $currency);
         });
-    }
-
-
-
-    private function getRepositoryForCurrency(string $currency) {
-        switch($currency) {
-            case 'bitcoin': {
-                return $this->bitcoinRepository;
-            }
-            case 'litecoin': {
-                return $this->litecoinRepository;
-            }
-        }
-    }
-
-    private function processNewRate(CurrencyRepositoryContract $repository, $value) {
-        $timestamp = now();
-
-        $singleRate = new SingleRate($timestamp, $value);
-        $repository->add($timestamp, $singleRate);
-
-
     }
 }

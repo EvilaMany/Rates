@@ -1,7 +1,7 @@
 <?php
 namespace Evilamany\Rates\Contracts;
 
-interface RatesProducerContract
+interface RateProducerContract
 {
     public static function subscribe($messageCallback);
 }

@@ -1,10 +1,9 @@
 <?php
-namespace Evilamany\Rates\Models;
+namespace Evilamany\Rates\Models\SingleRate;
 
 use Evilamany\Rates\Contracts\RateContract;
-use Evilamany\Rates\Repositories\SignleRatesRepository;
 
-class SingleRate implements RateContract {
+class SingleRate extends Rate implements RateContract {
     public
         $value = null;
 
@@ -29,11 +28,10 @@ class SingleRate implements RateContract {
         return $this->timestamp;
     }
 
-    public function save() {
-
-    }
-
-    public function __toString() {
-        return '';
+    public function toArray() {
+        return [
+            'value' => $this->value,
+            'timestamp' => $this->timestamp
+        ];
     }
 }

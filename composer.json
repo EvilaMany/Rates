@@ -12,5 +12,7 @@
             "Evilamany\\CurrencyRater\\": "src/"
         }
     },
-    "require": {}
+    "require": {
+        "cheprasov/php-redis-client": "^1.10"
+    }
 }

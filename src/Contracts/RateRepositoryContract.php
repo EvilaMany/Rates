@@ -1,11 +1,15 @@
 <?php
 namespace Evilamany\Rates\Contracts;
 
+use Evilamany\Rates\Contracts\RateContract;
+
 interface RateRepositoryContract
 {
-    public function push(string $currency);
+    public function setCurrency(string $currency);
 
-    public function timestampExists(int $timestamp);
+    public function updateOrCreate(RateContract $rate);
 
-    public function getByTimestamp(int $timestamp);
+    public function exists(int $timestamp);
+
+    public function find(int $timestamp);
 }

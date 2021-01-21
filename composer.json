@@ -1,0 +1,16 @@
+{
+    "name": "evilamany/rates",
+    "description": "Get currencies rates and recieve statistics",
+    "authors": [
+        {
+            "name": "alexander volkov",
+            "email": "evilamany@mail.ru"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Evilamany\\CurrencyRater\\": "src/"
+        }
+    },
+    "require": {}
+}

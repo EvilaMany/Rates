@@ -4,6 +4,7 @@ namespace Evilamany\Rates;
 use Evilamany\Rates\Services\CandleRateService;
 use Evilamany\Rates\Services\SingleRateService;
 use Evilamany\Rates\Facades\RedisFacade;
+use Evilamany\Rates\CoincapRateProvider as RateProvider;
 
 class RatesBroker
 {
@@ -18,7 +19,7 @@ class RatesBroker
     }
 
     public function run() {
-        RateProducer::listen(function($currency, $value) {
+        RateProvider::listen(function($currency, $value) {
             $now = now()->timestamp;
 
             $this->singleRateService->processValue($value, $now, $currency);

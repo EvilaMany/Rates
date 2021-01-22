@@ -12,7 +12,14 @@
             "Evilamany\\CurrencyRater\\": "src/"
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Devristo/phpws"
+        }
+    ],
     "require": {
-        "cheprasov/php-redis-client": "^1.10"
+        "cheprasov/php-redis-client": "^1.10",
+        "devristo/phpws": "dev-master"
     }
 }

@@ -8,7 +8,9 @@ class SingleRate extends Rate implements RateContract {
         $value = null;
 
     private
-        $timestamp = null;
+        $timestamp = null,
+
+        $currency = null;
 
 
     /**
@@ -16,19 +18,25 @@ class SingleRate extends Rate implements RateContract {
      * @param $timestamp
      * @param integer $value
      */
-    public function __construct($timestamp, integer $value) {
+    public function __construct($timestamp, $currency, integer $value) {
         $this->timestamp = $timestamp;
         $this->value = $value;
+        $this->currency = $currency;
     }
 
     /**
      * @return |null
      */
-    public function getTimestamp() {
+    public function getTimestamp(): ?int {
         return $this->timestamp;
     }
 
-    public function toArray() {
+
+    public function getCurrency(): string {
+        return $this->currency;
+    }
+
+    public function toArray(): array {
         return [
             'value' => $this->value,
             'timestamp' => $this->timestamp

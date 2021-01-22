@@ -8,12 +8,10 @@ use Evilamany\Rates\Facades\RedisFacade;
 
 class CandleRateRepository implements RateRepositoryContract
 {
-    protected $currency = '';
-
     protected $interval = null;
 
-    public function __construct($currency = '') {
-        $this->currency = $currency;
+    public function __construct() {
+
     }
 
     /**

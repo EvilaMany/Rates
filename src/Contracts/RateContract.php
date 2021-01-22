@@ -1,9 +1,12 @@
 <?php
 namespace Evilamany\Rates\Contracts;
 
-interface RateContract
-{
-    public function toArray();
+use Evilamany\Rates\Contracts\Common\Arrayble;
+use Evilamany\Rates\Contracts\Common\HasTimestamp;
 
-    public function getTimestamp();
+interface RateContract
+    extends Arrayble, HasTimestamp
+{
+    public function getCurrency(): string;
+
 }

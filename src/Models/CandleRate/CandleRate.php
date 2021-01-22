@@ -28,22 +28,29 @@ class CandleRate implements RateContract
         /**
          * First second of inverval
          */
-        $timestamp = null;
+        $timestamp = null,
 
-    public function __construct($timestamp, array $values) {
+        $currency = null;
+
+    public function __construct($timestamp, $currency, array $values) {
         $this->timestamp = $timestamp;// - ($timestamp % ($interval * 60));
         $this->start = $values['start'] ?? null;
         $this->end = $values['end'] ?? null;
         $this->max = $values['max'] ?? null;
         $this->min = $values['min'] ?? null;
+        $this->currency = $currency;
     }
 
 
-    public function getTimestamp() {
+    public function getTimestamp(): ?int {
         return $this->timestamp;
     }
 
-    public function toArray() {
+    public function getCurrency(): string {
+        return $this->currency;
+    }
+
+    public function toArray(): array {
         return [
             'min' => $this->min,
             'max' => $this->max,

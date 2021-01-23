@@ -1,5 +1,5 @@
 <?php
-namespace Evilamany\CurrencyRater\Tests\Unit;
+namespace Evilamany\Rates\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Evilamany\Rates\RatesBroker;

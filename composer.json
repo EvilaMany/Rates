@@ -20,7 +20,8 @@
     ],
     "require": {
         "cheprasov/php-redis-client": "^1.10",
-        "devristo/phpws": "dev-master"
+        "devristo/phpws": "dev-master",
+        "ext-json": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"

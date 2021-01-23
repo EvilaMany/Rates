@@ -10,7 +10,7 @@ class UseTest extends TestCase
 
         $eventBus = new EventBus($config = []);
 
-        $provider = CoincapRateProvider($eventBus)
+        $provider = new CoincapRateProvider($eventBus)
             ->setCurrencies([
                 'bitcoin',
                 'litecoin'
@@ -35,7 +35,7 @@ class UseTest extends TestCase
         $eventBus->onSingleUpdate(function(SingleRate $rate){ });
 
         #
-        $eventBus->onValueRelise(function(RawRate $rate) {
+        $eventBus->onRateRelise(function(RawRate $rate) {
             //...update predictions
         });
     }

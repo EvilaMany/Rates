@@ -1,9 +1,9 @@
 <?php
-namespace Evilamany\Rates\Models\SingleRate;
+namespace Evilamany\Rates\Models\RawRate;
 
 use Evilamany\Rates\Contracts\RateContract;
 
-class SingleRate implements RateContract {
+class RawRate implements RateContract {
     public
         $value = null;
 
@@ -18,7 +18,7 @@ class SingleRate implements RateContract {
      * @param $timestamp
      * @param integer $value
      */
-    public function __construct($timestamp, $currency, integer $value) {
+    public function __construct($timestamp, $currency, int $value) {
         $this->timestamp = $timestamp;
         $this->value = $value;
         $this->currency = $currency;
@@ -31,11 +31,16 @@ class SingleRate implements RateContract {
         return $this->timestamp;
     }
 
-
+    /**
+     * @return string
+     */
     public function getCurrency(): string {
         return $this->currency;
     }
 
+    /**
+     * @return array
+     */
     public function toArray(): array {
         return [
             'value' => $this->value,

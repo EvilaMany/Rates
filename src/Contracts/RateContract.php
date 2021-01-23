@@ -8,5 +8,4 @@ interface RateContract
     extends Arrayble, HasTimestamp
 {
     public function getCurrency(): string;
-
 }

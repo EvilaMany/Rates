@@ -1,9 +1,9 @@
 <?php
 namespace Evilamany\Rates\Gateways;
 
-use RedisClient\RedisClient;
+use RedisClient\ClientFactory;
 
-class Redis
+class RedisGateway
 {
     protected $client = null;
 
@@ -13,7 +13,7 @@ class Redis
 
         $this->client = ClientFactory::create([
             'server' => $host .':'. $port,
-            'password' => $config['password'] ?? '',
+            'password' => $config['password'] ?? null,
             'timeout' => 2
         ]);
     }

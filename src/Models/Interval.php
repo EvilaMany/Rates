@@ -3,13 +3,26 @@ namespace Evilamany\Rates\Models;
 
 class Interval {
 
+    public const INTERVALS = [
+        1,
+        5,
+        10,
+        15,
+        30,
+        60
+    ]; // minutes
+
     protected $interval = null;
+
+
 
     /**
      * Interval constructor.
      * @param int $interval { minutes }
      */
     public function __construct(int $interval) {
+        if(!in_array(self::INTERVALS, $interval)) throw new Exception('Unsupported interval');
+
         $this->interval = $interval;
     }
 

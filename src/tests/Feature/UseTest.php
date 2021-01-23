@@ -22,7 +22,6 @@ class UseTest extends TestCase
 
         #
         $packer = new RatesPacker($eventBus, $ratesStorage);
-
         $packer->run();
 
         #
@@ -30,7 +29,14 @@ class UseTest extends TestCase
 
         #
         $ratesStorage->getSingles($currency, $timeFrom, $timeTo);
-
         $ratesStorage->getCandles1min($currency, $timeFrom, $timeTo);
+
+        $eventBus->onCandleUpdate(function(CandleRate $candle){  });
+        $eventBus->onSingleUpdate(function(SingleRate $rate){ });
+
+        #
+        $eventBus->onValueRelise(function(RawRate $rate) {
+            //...update predictions
+        });
     }
 }

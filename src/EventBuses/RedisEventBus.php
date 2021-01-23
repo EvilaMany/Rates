@@ -11,9 +11,8 @@ class RedisEventBus implements EventBusContract
 {
     protected $connection = null;
 
-    public function __construct(array $config = []) {
-        $this->connection = new RedisGateway;
-        $this->connection->setConnection($config);
+    public function __construct(RedisGateway $connection) {
+        $this->connection = $connection;
     }
 
     //TODO write implementation via REDIS connection

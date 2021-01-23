@@ -22,10 +22,12 @@ class CoincapRateProvider implements RateProviderContract {
         'tron'
     ];
 
-    protected $selectedCurrencies;
+    protected $selectedCurrencies = [];
 
     public function __construct(EventBusContract $eventBus) {
-        $this->eventBus = $eventBus;
+		$this->eventBus = $eventBus;
+		$this->selectedCurrencies = self::CURRENCIES;
+		
         Logger::clean();
     }
 
@@ -93,23 +95,24 @@ class CoincapRateProvider implements RateProviderContract {
 
     private function publishEvent($action, $info = null) {
         $action = 'coincap.' . $action;
-
-        //$this->eventBus->publish($action, $info);
+		
+		$this->eventBus->publish($action, $info);
     }
 
     private function createRates(string $message) {
-        $now = time();
+		$now = time();
+		print($message);
 
         $ratesArray = json_decode($message, 1);
 
         foreach($ratesArray as $currency => $value) {
-            $rate = new RawRate(
+            $rawRate = new RawRate(
                 (integer) $now,
                 $currency,
                 (integer) $value
             );
 
-            Logger::write(var_export($rate->toArray(), 1));
+			$this->eventBus->publishRateRelised($rawRate);
         }
 
 

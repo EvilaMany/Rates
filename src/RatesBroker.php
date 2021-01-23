@@ -12,6 +12,7 @@ class RatesBroker
             $singleRateService;
 
     public function construct($config) {
+
         $this->candleRateService = new CandleRateService;
         $this->singleRateService = new SingleRateService;
 

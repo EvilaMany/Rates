@@ -9,7 +9,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Evilamany\\CurrencyRater\\": "src/"
+            "Evilamany\\Rates\\": "src/"
         }
     },
     "repositories": [
@@ -21,5 +21,8 @@
     "require": {
         "cheprasov/php-redis-client": "^1.10",
         "devristo/phpws": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
     }
 }

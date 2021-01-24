@@ -11,17 +11,32 @@ class RedisEventBus implements EventBusContract
 {
     protected $connection = null;
 
-    public function __construct(RedisGateway $connection) {
+	public function __construct(RedisGateway $connection) {
         $this->connection = $connection;
     }
 
-    //TODO write implementation via REDIS connection
+
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $event
+	 * @param string $message
+	 * @return boolean
+	 */
     public function publish(string $event, string $message): bool {
         $this->connection->publish($event, $message);
 
         return true;
     }
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param string $event
+	 * @param Callable $callback
+	 * @return void
+	 */
     public function subscribe(string $event, Callable $callback) {
         $this->connection->subscribe($event, function($type, $channel, $message) use($callback) {
             if($type === 'message') {
@@ -32,27 +47,90 @@ class RedisEventBus implements EventBusContract
         return true;
     }
 
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param RawRate $rate
+	 * @return boolean
+	 */
     public function publishRateRelised(RawRate $rate): bool {
         return $this->publish('rate.relised', json_encode($rate->toArray()));
     }
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param SingleRate $rate
+	 * @return boolean
+	 */
     public function publishSingleUpdated(SingleRate $rate): bool {
         return $this->publish('single.updated', json_encode($rate->toArray()));
     }
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param CandleRate $rate
+	 * @return boolean
+	 */
     public function publishCandleUpdated(CandleRate $rate): bool {
         return $this->publish('candle.updated', json_encode($rate->toArray()));
     }
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param Callable $callback
+	 * @return void
+	 */
     public function onRateRelised(Callable $callback) {
-
+		$this->subscribe('rate.relised', function($redis, $channel, $message) {
+			$info = json_decode($message, 1);
+			
+			$rate = new RawRate($info);
+		
+			$callback($rate);
+		});
     }
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param Callable $callback
+	 * @return void
+	 */
     public function onCandleUpdated(Callable $callback) {
-
+		$this->subscribe('candle.updated', function($redis, $channel, $message) {
+			$info = json_decode($message, 1);
+			
+			$rate = new SingleRate(
+				$message['timestamp'], 
+				$message['currency'],
+				(integer) $message['value']
+			);
+		
+			$callback($rate);
+		});
     }
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param Callable $callback
+	 * @return void
+	 */
     public function onSingleUpdated(Callable $callback) {
+		$this->subscribe('single.updated', function($redis, $channel, $message) {
+			$info = json_decode($message);
 
+			$rate = new CandleRate(
+				$message['timestamp'],
+				$message['currency'],
+				$message['values']
+			);
+		
+			$callback($rate);
+		});
     }
 }

@@ -101,7 +101,6 @@ class CoincapRateProvider implements RateProviderContract {
 
     private function createRates(string $message) {
 		$now = time();
-		print($message);
 
         $ratesArray = json_decode($message, 1);
 
@@ -110,7 +109,11 @@ class CoincapRateProvider implements RateProviderContract {
                 (integer) $now,
                 $currency,
                 (integer) $value
-            );
+			);
+			
+			if(is_callable($this->mutator)) {
+				$rate = $this->mutator($rawRate);
+			}
 
 			$this->eventBus->publishRateRelised($rawRate);
         }

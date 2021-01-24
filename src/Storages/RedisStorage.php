@@ -12,14 +12,10 @@ class RedisStorage implements StorageContract
 
     public function setSingle($currency, RateContract $rate): bool {
         if(!$rate instanceOf SingleRate) throw new Exception('Unexpected rate type');
-
-
     }
 
     public function setCandle($currency, RateContract $rate): bool {
         if(!$rate instanceOf CandleRate) throw new Exception('Unexpected rate type');
-
-
     }
 
     public function getSingles($currency, int $timestampFrom, int $timestampTo): ?array {

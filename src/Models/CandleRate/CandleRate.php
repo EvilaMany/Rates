@@ -57,7 +57,8 @@ class CandleRate implements RateContract
             'start' => $this->start,
             'end' => $this->end,
             'interval' => $this->interval,
-            'timestamp' => $this->timestamp
+            'timestamp' => $this->timestamp,
+            'currency' => $this->currency
         ];
     }
 }

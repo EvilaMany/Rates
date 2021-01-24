@@ -24,7 +24,8 @@ class RedisEventBus implements EventBusContract
 	 * @param string $message
 	 * @return boolean
 	 */
-    public function publish(string $event, string $message): bool {
+    public function publish(string $event, string $message = ''): bool {
+        //print($event . ' ' . $message . "\n");
         $this->connection->publish($event, $message);
 
         return true;
@@ -39,12 +40,8 @@ class RedisEventBus implements EventBusContract
 	 */
     public function subscribe(string $event, Callable $callback) {
         $this->connection->subscribe($event, function($type, $channel, $message) use($callback) {
-            if($type === 'message') {
-                return $callback($message, $channel);
-            }
+            return $callback($message, $channel);
         });
-
-        return true;
     }
 
 
@@ -85,11 +82,11 @@ class RedisEventBus implements EventBusContract
 	 * @return void
 	 */
     public function onRateRelised(Callable $callback) {
-		$this->subscribe('rate.relised', function($redis, $channel, $message) {
+		$this->subscribe('rate.relised', function($message, $channel) use($callback) {
 			$info = json_decode($message, 1);
-			
-			$rate = new RawRate($info);
-		
+
+			$rate = new RawRate($info['timestamp'], $info['currency'], $info['value']);
+
 			$callback($rate);
 		});
     }
@@ -101,15 +98,15 @@ class RedisEventBus implements EventBusContract
 	 * @return void
 	 */
     public function onCandleUpdated(Callable $callback) {
-		$this->subscribe('candle.updated', function($redis, $channel, $message) {
+		$this->subscribe('candle.updated', function($message, $channel) use($callback) {
 			$info = json_decode($message, 1);
-			
+
 			$rate = new SingleRate(
-				$message['timestamp'], 
+				$message['timestamp'],
 				$message['currency'],
 				(integer) $message['value']
 			);
-		
+
 			$callback($rate);
 		});
     }
@@ -121,7 +118,7 @@ class RedisEventBus implements EventBusContract
 	 * @return void
 	 */
     public function onSingleUpdated(Callable $callback) {
-		$this->subscribe('single.updated', function($redis, $channel, $message) {
+		$this->subscribe('single.updated', function($message, $channel) use($callback) {
 			$info = json_decode($message);
 
 			$rate = new CandleRate(
@@ -129,7 +126,7 @@ class RedisEventBus implements EventBusContract
 				$message['currency'],
 				$message['values']
 			);
-		
+
 			$callback($rate);
 		});
     }

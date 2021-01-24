@@ -18,7 +18,7 @@ class RawRate implements RateContract {
      * @param $timestamp
      * @param integer $value
      */
-    public function __construct($timestamp, $currency, int $value) {
+    public function __construct($timestamp, $currency, float $value) {
         $this->timestamp = $timestamp;
         $this->value = $value;
         $this->currency = $currency;
@@ -44,7 +44,8 @@ class RawRate implements RateContract {
     public function toArray(): array {
         return [
             'value' => $this->value,
-            'timestamp' => $this->timestamp
+            'timestamp' => $this->timestamp,
+            'currency' => $this->currency
         ];
     }
 }

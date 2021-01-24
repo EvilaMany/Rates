@@ -27,7 +27,7 @@ class CoincapRateProvider implements RateProviderContract {
     public function __construct(EventBusContract $eventBus) {
 		$this->eventBus = $eventBus;
 		$this->selectedCurrencies = self::CURRENCIES;
-		
+
         Logger::clean();
     }
 
@@ -93,9 +93,9 @@ class CoincapRateProvider implements RateProviderContract {
         $loop->run();
     }
 
-    private function publishEvent($action, $info = null) {
+    private function publishEvent($action, $info = '') {
         $action = 'coincap.' . $action;
-		
+
 		$this->eventBus->publish($action, $info);
     }
 
@@ -108,9 +108,9 @@ class CoincapRateProvider implements RateProviderContract {
             $rawRate = new RawRate(
                 (integer) $now,
                 $currency,
-                (integer) $value
+                (float) $value
 			);
-			
+
 			if(is_callable($this->mutator)) {
 				$rate = $this->mutator($rawRate);
 			}

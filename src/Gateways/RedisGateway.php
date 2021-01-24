@@ -26,6 +26,7 @@ class RedisGateway
     }
 
     public function publish(string $event, string $value) {
+        //print($event . $value . "\n");
         $this->client->publish($event, $value);
     }
 

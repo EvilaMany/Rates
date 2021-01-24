@@ -10,29 +10,25 @@ use Evilamany\Rates\Gateways\RedisGateway;
 //$redis->connect('127.0.0.1', 6379);
 
 $gateway = new RedisGateway([
-	'host' => '127.0.0.1',
-	'post' => '6379',
-	'password' => null,
-	'database' => 'rates'
+    'host' => '127.0.0.1',
+    'post' => '6379',
+    'password' => null,
+    'database' => 'rates'
 ]);
 
 $bus = new RedisEventBus($gateway);
 
 
-if(isset($argv[1]) && $argv[1] == 'provider') {
-    print('provider');
-    $provider = new CoincapRateProvider($bus);
-
-    $provider->setCurrencies(['bitcoin']);
-
-    $provider->run();
-}
-else {
-    $bus->onRateRelised(function ($rate) {
-        print_r($rate);
+if($argv[1] == 'sub') {
+    $bus->subscribe('time', function (string $message) {
+        print_r($message);
     });
 }
 
+
+if($argv[1] == 'pub') {
+    $bus->publish('time', time());
+}
 
 /*
 $gateway->publish('name', 'VALUE1');

@@ -22,6 +22,7 @@ class UseTest extends TestCase
 
         #
         $packer = new RatesPacker($eventBus, $ratesStorage);
+        $packer->setKinds(['single', 'candle']);
         $packer->run();
 
         #

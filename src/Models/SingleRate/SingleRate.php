@@ -18,7 +18,7 @@ class SingleRate implements RateContract {
      * @param $timestamp
      * @param integer $value
      */
-    public function __construct($timestamp, $currency, integer $value) {
+    public function __construct($timestamp, $currency, float $value) {
         $this->timestamp = $timestamp;
         $this->value = $value;
         $this->currency = $currency;
@@ -39,7 +39,8 @@ class SingleRate implements RateContract {
     public function toArray(): array {
         return [
             'value' => $this->value,
-            'timestamp' => $this->timestamp
+            'timestamp' => $this->timestamp,
+            'currency' => $this->currency
         ];
     }
 }
